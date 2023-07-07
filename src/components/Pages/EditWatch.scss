@@ -392,6 +392,43 @@ ul {
                 background-color: #555555;
             }
         }
+
+        .add-knd-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #292929;
+            width: auto;
+            height: 40px;
+            display: flex;
+            border-radius: 4px;
+            border: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            &:hover {
+                background-color: #555555;
+            }
+        }
+
+        .button-container {
+            display: flex;
+        }
+
+        .add-table-knd-btn,
+        .remove-table-knd-btn {
+            flex: 1;
+            margin-right: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #292929;
+            width: 70px;
+            height: 40px;
+            border-radius: 4px;
+            border: none;
+        }
     }
 }
 

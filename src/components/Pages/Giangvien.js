@@ -7,14 +7,22 @@ import CloseIcon from '@mui/icons-material/Close';
 import { DataGrid } from '@mui/x-data-grid';
 
 const EditWatch = () => {
-    showTGB;
     const [watches, setWatches] = useState([]);
     const [LTC, setLTC] = useState([]);
+    const [KNDCo, setKNDCo] = useState([]);
+    const [KNDChua, setKNDChua] = useState([]);
+    const [TGBChua, setTGBChua] = useState([]);
+    const [TGBCo, setTGBCo] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [showDataGridPC, setShowDataGridPC] = useState(false);
     const [showTGB, setshowTGB] = useState(false);
+    const [showKND, setshowKND] = useState(false);
     const [selectedWatch, setSelectedWatch] = useState(null);
     const [selectedLTC, setSelectedLTC] = useState('');
+    const [selectedKNDCo, setSelectedKNDCo] = useState('');
+    const [selectedKNDChua, setSelectedKNDChua] = useState('');
+    const [selectedTGBCo, setSelectedTGBCo] = useState('');
+    const [selectedTGBChua, setSelectedTGBChua] = useState('');
     const [isEditing, setIsEditing] = useState(false);
 
     const [addName, setaddName] = useState('');
@@ -30,9 +38,6 @@ const EditWatch = () => {
     const [editedHocVi, setEditedHocVi] = useState(null);
     const [editedQuantity, setEditedQuantity] = useState(null);
     const [editedType, setEditedType] = useState(null);
-
-    const TKB = [2, 4, 5, 7];
-    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
     useEffect(() => {
         if (selectedWatch) {
@@ -138,8 +143,117 @@ const EditWatch = () => {
             console.log('Lỗi khi gọi API:', error);
         }
         setShowAddForm(false);
-        //setShowDataGridPC(false);
+
         fetchData();
+    };
+
+    const handleAddTGB = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.post(
+                '/giangvien/themBuoiCoTheDay',
+                {
+                    MaGV: selectedWatch.MaGV,
+                    MaTGB: selectedTGBChua.MaTGB,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+        }
+        handleThoiGianBieuClick();
+    };
+
+    const handleDeleteTGB = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.post(
+                '/giangvien/xoaBuoiCoTheDay',
+                {
+                    MaGV: selectedWatch.MaGV,
+                    MaTGB: selectedTGBCo.MaTGB,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+        }
+        handleThoiGianBieuClick();
+    };
+
+    const handleAddKND = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.post(
+                '/giangvien/themKhaNangDay',
+                {
+                    MaGV: selectedWatch.MaGV,
+                    MaMH: selectedKNDChua.MaMH,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+        }
+        handleKhaNangDayClick();
+    };
+
+    const handleDeleteKND = async () => {
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await API.post(
+                '/giangvien/xoaKhaNangDay',
+                {
+                    MaGV: selectedWatch.MaGV,
+                    MaMH: selectedKNDCo.MaMH,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+        }
+        handleKhaNangDayClick();
     };
 
     //data
@@ -165,6 +279,12 @@ const EditWatch = () => {
         Active: watch.Active ? 'Đang Hoạt Động' : 'Đã Nghỉ',
     }));
 
+    const handleRowClick = (params) => {
+        // Lấy thông tin đồng hồ từ hàng được bấm
+        const selectedRow = params.row;
+        setSelectedWatch(selectedRow);
+    };
+
     //data phân công
     const columnsPC = [
         { field: 'MaLTC', headerName: 'Mã LTC', width: 200 },
@@ -189,40 +309,86 @@ const EditWatch = () => {
         MaMH: ltc.MaMH,
     }));
 
-    //thời gian biểu
-    const columnsTGB = [
-        { field: 'MaLTC', headerName: 'Mã LTC', width: 200 },
-        { field: 'NamHoc', headerName: 'Năm Học', width: 100 },
-        { field: 'HocKi', headerName: 'Học Kì', width: 120 },
-        { field: 'SLToiDa', headerName: 'SL Tối Đa', width: 100 },
-        { field: 'NgayBD', headerName: 'Ngày Bắt Đầu', width: 170 },
-        { field: 'NgayKT', headerName: 'Ngày Kết Thúc', width: 120 },
-        { field: 'Active', headerName: 'Trạng Thái', width: 120 },
-        { field: 'MaMH', headerName: 'Mã Môn Học', width: 120 },
-    ];
-
-    const rowsTGB = LTC.map((ltc) => ({
-        id: ltc.MaLTC,
-        MaLTC: ltc.MaLTC,
-        NamHoc: ltc.NamHoc,
-        HocKi: ltc.HocKi,
-        SLToiDa: ltc.SLToiDa,
-        NgayBD: ltc.NgayBD.substring(0, 10),
-        NgayKT: ltc.NgayKT.substring(0, 10),
-        Active: ltc.Active,
-        MaMH: ltc.MaMH,
-    }));
-
-    const handleRowClick = (params) => {
-        // Lấy thông tin đồng hồ từ hàng được bấm
-        const selectedRow = params.row;
-        setSelectedWatch(selectedRow);
-    };
-
     const handleRowClickPC = (params) => {
         // Lấy thông tin đồng hồ từ hàng được bấm
         const selectedRowPC = params.row;
         setSelectedLTC(selectedRowPC);
+    };
+
+    //thời gian biểu
+    const columnsTGBCo = [
+        { field: 'MaTGB', headerName: 'Mã TBG', width: 200 },
+        { field: 'Thu', headerName: 'Thứ', width: 100 },
+        { field: 'Buoi', headerName: 'Buổi', width: 120 },
+    ];
+
+    const rowsTGBCo = TGBCo.map((tgbCo) => ({
+        id: tgbCo.MaTGB,
+        MaTGB: tgbCo.MaTGB,
+        Thu: tgbCo.Thu,
+        Buoi: tgbCo.Buoi ? 'Sáng' : 'Chiều',
+    }));
+
+    const handleRowClickTGBCo = (params) => {
+        // Lấy thông tin đồng hồ từ hàng được bấm
+        const selectedRowTGBCo = params.row;
+        setSelectedTGBCo(selectedRowTGBCo);
+    };
+
+    const columnsTGBChua = [
+        { field: 'MaTGB', headerName: 'Mã TBG', width: 200 },
+        { field: 'Thu', headerName: 'Thứ', width: 100 },
+        { field: 'Buoi', headerName: 'Buổi', width: 120 },
+    ];
+
+    const rowsTGBChua = TGBChua.map((tgbChua) => ({
+        //id: tgbChua.MaTGB,
+
+        id: tgbChua.MaTGB,
+        MaTGB: tgbChua.MaTGB,
+        Thu: tgbChua.Thu,
+        Buoi: tgbChua.Buoi ? 'Sáng' : 'Chiều',
+    }));
+
+    const handleRowClickTGBChua = (params) => {
+        // Lấy thông tin đồng hồ từ hàng được bấm
+        const selectedRowTGBChua = params.row;
+        setSelectedTGBChua(selectedRowTGBChua);
+    };
+
+    //dataKND
+    const columnsKNDCo = [
+        { field: 'MaMH', headerName: 'Mã MH', width: 200 },
+        { field: 'TenMH', headerName: 'Tên MH', width: 200 },
+    ];
+
+    const rowsKNDCo = KNDCo.map((knd) => ({
+        id: knd.MaMH,
+        MaMH: knd.MaMH,
+        TenMH: knd.TenMH,
+    }));
+
+    const handleRowClickKNDCo = (params) => {
+        // Lấy thông tin đồng hồ từ hàng được bấm
+        const selectedRowKNDCo = params.row;
+        setSelectedKNDCo(selectedRowKNDCo);
+    };
+
+    const columnsKNDChua = [
+        { field: 'MaMH', headerName: 'Mã MH', width: 200 },
+        { field: 'TenMH', headerName: 'Tên MH', width: 200 },
+    ];
+
+    const rowsKNDChua = KNDChua.map((knd) => ({
+        id: knd.MaMH,
+        MaMH: knd.MaMH,
+        TenMH: knd.TenMH,
+    }));
+
+    const handleRowClickKNDChua = (params) => {
+        // Lấy thông tin đồng hồ từ hàng được bấm
+        const selectedRowKNDChua = params.row;
+        setSelectedKNDChua(selectedRowKNDChua);
     };
 
     const handleDateChange = (date) => {
@@ -311,16 +477,7 @@ const EditWatch = () => {
 
             if (response.data.success) {
                 console.log('Watch updated successfully');
-                // Xử lý thành công sau khi cập nhật đồng hồ
-                setSelectedWatch({
-                    ...selectedWatch,
-                    HoTen: editedName,
-                    HocVi: editedHocVi,
-                    HocHam: editedHocHam,
-                    Phai: editedLine === 1 ? 'Nam' : 'Nữ',
-                    NgaySinh: editedQuantity,
-                    DiaChi: editedType,
-                });
+                setTGBCo(response.data.buoiCoTheDay);
             } else {
                 console.log('Failed to update watch');
                 // Xử lý khi cập nhật đồng hồ không thành công
@@ -330,12 +487,29 @@ const EditWatch = () => {
             // Xử lý lỗi
         }
 
-        setIsEditing(false);
+        try {
+            const response = await API.get(`/giangvien/hienThiBuoiChuaTheDay/${selectedWatch.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.data.success) {
+                console.log('Watch updated successfully');
+                setTGBChua(response.data.buoiChuaTheDay);
+            } else {
+                console.log('Failed to update watch');
+                // Xử lý khi cập nhật đồng hồ không thành công
+            }
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+
         setshowTGB(true);
     };
 
     const handlePhanCongClick = async () => {
-        // Thực hiện các thao tác lưu dữ liệu tại
         setShowDataGridPC(true);
     };
 
@@ -355,19 +529,9 @@ const EditWatch = () => {
             );
 
             if (response.data.success) {
-                console.log('Watch updated successfully');
-                // Xử lý thành công sau khi cập nhật đồng hồ
-                setSelectedWatch({
-                    ...selectedWatch,
-                    HoTen: editedName,
-                    HocVi: editedHocVi,
-                    HocHam: editedHocHam,
-                    Phai: editedLine === 1 ? 'Nam' : 'Nữ',
-                    NgaySinh: editedQuantity,
-                    DiaChi: editedType,
-                });
-            } else {
-                console.log('Failed to update watch');
+                // Xử lý thành công sau khi cập nhật
+                setKNDCo(response.data.khaNangDay);
+
                 // Xử lý khi cập nhật đồng hồ không thành công
             }
         } catch (error) {
@@ -375,7 +539,30 @@ const EditWatch = () => {
             // Xử lý lỗi
         }
 
-        setIsEditing(false);
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await API.get(
+                `/giangvien/hienThiMonChuaTheDay/${selectedWatch.id}`,
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            if (response.data.success) {
+                // Xử lý thành công sau khi cập nhật
+                setKNDChua(response.data.monChuaTheDay);
+
+                // Xử lý khi cập nhật đồng hồ không thành công
+            }
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+        setshowKND(true);
     };
 
     const handleDeleteWatch = async () => {
@@ -613,7 +800,7 @@ const EditWatch = () => {
                                                             className="edit-button"
                                                             onClick={handleThoiGianBieuClick}
                                                         >
-                                                            <span>THỜI GIAN BIỂU</span>
+                                                            <span>THỜI GIAN DẠY</span>
                                                         </button>
                                                         <button
                                                             type="button"
@@ -663,9 +850,96 @@ const EditWatch = () => {
 
                                         {showTGB && (
                                             <div>
-                                                <div className="tkb-container">
-                                                    <h1>Thời Khóa Biểu</h1>
-                                                    <table className="tkb-table"></table>
+                                                <div className="data-grid-overlay">
+                                                    <div className="data-grid-container">
+                                                        <button
+                                                            className="close-button"
+                                                            onClick={() => setshowTGB(false)}
+                                                        >
+                                                            <CloseIcon />
+                                                        </button>
+
+                                                        <div
+                                                            style={{ height: '100%', width: '100%' }}
+                                                            className="datagrid-container"
+                                                        >
+                                                            <DataGrid
+                                                                rows={rowsTGBChua}
+                                                                columns={columnsTGBChua}
+                                                                onRowClick={handleRowClickTGBChua}
+                                                            />
+                                                        </div>
+
+                                                        <div class="button-container">
+                                                            <button class="add-table-knd-btn" onClick={handleAddTGB}>
+                                                                THÊM
+                                                            </button>
+                                                            <button
+                                                                class="remove-table-knd-btn"
+                                                                onClick={handleDeleteTGB}
+                                                            >
+                                                                XÓA
+                                                            </button>
+                                                        </div>
+
+                                                        <div
+                                                            style={{ height: '100%', width: '100%' }}
+                                                            className="datagrid-container"
+                                                        >
+                                                            <DataGrid
+                                                                rows={rowsTGBCo}
+                                                                columns={columnsTGBCo}
+                                                                onRowClick={handleRowClickTGBCo}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {showKND && (
+                                            <div>
+                                                <div className="data-grid-overlay">
+                                                    <div className="data-grid-container">
+                                                        <button
+                                                            className="close-button"
+                                                            onClick={() => setshowKND(false)}
+                                                        >
+                                                            <CloseIcon />
+                                                        </button>
+                                                        <div
+                                                            style={{ height: '100%', width: '100%' }}
+                                                            className="datagrid-container"
+                                                        >
+                                                            <DataGrid
+                                                                rows={rowsKNDChua}
+                                                                columns={columnsKNDChua}
+                                                                onRowClick={handleRowClickKNDChua}
+                                                            />
+                                                        </div>
+
+                                                        <div class="button-container">
+                                                            <button class="add-table-knd-btn" onClick={handleAddKND}>
+                                                                THÊM
+                                                            </button>
+                                                            <button
+                                                                class="remove-table-knd-btn"
+                                                                onClick={handleDeleteKND}
+                                                            >
+                                                                XÓA
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            style={{ height: '100%', width: '100%' }}
+                                                            className="datagrid-container"
+                                                        >
+                                                            <DataGrid
+                                                                rows={rowsKNDCo}
+                                                                columns={columnsKNDCo}
+                                                                onRowClick={handleRowClickKNDCo}
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         )}

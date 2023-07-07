@@ -109,7 +109,7 @@ const SinhVien = () => {
         NgaySinh: watch.NgaySinh.substring(0, 10),
         DiaChi: watch.DiaChi,
         KhoaHoc: watch.KhoaHoc,
-        image: urlImg + watch.image,
+        image: urlImg + watch.HinhAnh,
         Active: watch.Active ? 'Đang Hoạt Động' : 'Đã Nghỉ',
         MaLop: watch.MaLop,
     }));
