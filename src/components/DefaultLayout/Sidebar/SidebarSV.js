@@ -24,7 +24,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { withRouter } from 'react-router-dom';
 import './Sidebar.scss';
-
+import ScoreboardOutlinedIcon from '@mui/icons-material/ScoreboardOutlined';
+import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -207,9 +208,9 @@ class MiniDrawer extends React.Component {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <WatchIcon />
+                                        <ScoreboardOutlinedIcon />
                                     </ListItemIcon>
-                                    <ListItemText primary="Giảng Viên" sx={{ opacity: open ? 1 : 0 }} />
+                                    <ListItemText primary="Xem điểm" sx={{ opacity: open ? 1 : 0 }} />
                                 </ListItemButton>
                             </ListItem>
 
@@ -229,9 +230,9 @@ class MiniDrawer extends React.Component {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <AddBusinessIcon />
+                                        <AppRegistrationOutlinedIcon />
                                     </ListItemIcon>
-                                    <ListItemText primary="Sinh Viên" sx={{ opacity: open ? 1 : 0 }} />
+                                    <ListItemText primary="Đăng kí môn" sx={{ opacity: open ? 1 : 0 }} />
                                 </ListItemButton>
                             </ListItem>
 

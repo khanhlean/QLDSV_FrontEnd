@@ -291,13 +291,13 @@ const EditWatch = () => {
 
     //data
     const columns = [
-        { field: 'HoTen', headerName: 'Họ Tên', width: 200 },
-        { field: 'HocVi', headerName: 'Học Vị', width: 100 },
-        { field: 'HocHam', headerName: 'Học Hàm', width: 120 },
-        { field: 'Phai', headerName: 'Phái', width: 100 },
-        { field: 'NgaySinh', headerName: 'Ngày Sinh', width: 170 },
-        { field: 'DiaChi', headerName: 'Địa Chỉ', width: 120 },
-        { field: 'Active', headerName: 'Trạng Thái', width: 120 },
+        { field: 'HoTen', headerName: 'Họ Tên', flex: 1 },
+        { field: 'HocVi', headerName: 'Học Vị', flex: 1 },
+        { field: 'HocHam', headerName: 'Học Hàm', flex: 1 },
+        { field: 'Phai', headerName: 'Phái', flex: 1 },
+        { field: 'NgaySinh', headerName: 'Ngày Sinh', flex: 1 },
+        { field: 'DiaChi', headerName: 'Địa Chỉ', flex: 1 },
+        { field: 'Active', headerName: 'Trạng Thái', flex: 1 },
     ];
 
     const rows = watches.map((watch) => ({
@@ -320,11 +320,11 @@ const EditWatch = () => {
 
     //data phân công
     const columnsPC = [
-        { field: 'MaLTC', headerName: 'Mã LTC', width: 200 },
-        { field: 'MaGV', headerName: 'Mã giảng viên', width: 100 },
-        { field: 'HoTen', headerName: 'Họ tên', width: 120 },
-        { field: 'MaMH', headerName: 'Mã Môn học', width: 100 },
-        { field: 'TenMH', headerName: 'Tên môn học', width: 170 },
+        { field: 'MaLTC', headerName: 'Mã LTC', flex: 1 },
+        { field: 'MaGV', headerName: 'Mã giảng viên', flex: 1 },
+        { field: 'HoTen', headerName: 'Họ tên', flex: 1 },
+        { field: 'MaMH', headerName: 'Mã Môn học', flex: 1 },
+        { field: 'TenMH', headerName: 'Tên môn học', flex: 1 },
     ];
 
     const rowsPC = daPC.map((dapc) => ({
@@ -343,13 +343,13 @@ const EditWatch = () => {
     };
 
     const columnschuaPC = [
-        { field: 'MaLTC', headerName: 'Mã LTC', width: 200 },
-        { field: 'NamHoc', headerName: 'Năm học', width: 100 },
-        { field: 'HocKi', headerName: 'Học kì', width: 120 },
-        { field: 'SLToiDa', headerName: 'Số lượng tối đa', width: 100 },
-        { field: 'NgayBD', headerName: 'Ngày Bắt đầu', width: 170 },
-        { field: 'NgayKT', headerName: 'Ngày Kết Thúc', width: 170 },
-        { field: 'MaMH', headerName: 'Mã Môn Học', width: 170 },
+        { field: 'MaLTC', headerName: 'Mã LTC', flex: 1 },
+        { field: 'NamHoc', headerName: 'Năm học', flex: 1 },
+        { field: 'HocKi', headerName: 'Học kì', flex: 1 },
+        { field: 'SLToiDa', headerName: 'Số lượng tối đa', flex: 1 },
+        { field: 'NgayBD', headerName: 'Ngày Bắt đầu', flex: 1 },
+        { field: 'NgayKT', headerName: 'Ngày Kết Thúc', flex: 1 },
+        { field: 'MaMH', headerName: 'Mã Môn Học', flex: 1 },
     ];
 
     const rowschuaPC = chuaPC.map((chuaPC) => ({
@@ -915,6 +915,7 @@ const EditWatch = () => {
                                                             style={{ height: '100%', width: '100%' }}
                                                             className="datagrid-container"
                                                         >
+                                                            <p>Lớp tín chỉ chưa được phân công</p>
                                                             <DataGrid
                                                                 rows={rowschuaPC}
                                                                 columns={columnschuaPC}
@@ -938,6 +939,7 @@ const EditWatch = () => {
                                                             style={{ height: '100%', width: '100%' }}
                                                             className="datagrid-container"
                                                         >
+                                                            <p>Lớp tín chỉ đã được phân công</p>
                                                             <DataGrid
                                                                 rows={rowsPC}
                                                                 columns={columnsPC}
@@ -964,6 +966,7 @@ const EditWatch = () => {
                                                             style={{ height: '100%', width: '100%' }}
                                                             className="datagrid-container"
                                                         >
+                                                            <p>Những buổi chưa thể dạy</p>
                                                             <DataGrid
                                                                 rows={rowsTGBChua}
                                                                 columns={columnsTGBChua}
@@ -987,6 +990,7 @@ const EditWatch = () => {
                                                             style={{ height: '100%', width: '100%' }}
                                                             className="datagrid-container"
                                                         >
+                                                            <p>Những buổi có thể dạy</p>
                                                             <DataGrid
                                                                 rows={rowsTGBCo}
                                                                 columns={columnsTGBCo}
@@ -1012,6 +1016,7 @@ const EditWatch = () => {
                                                             style={{ height: '100%', width: '100%' }}
                                                             className="datagrid-container"
                                                         >
+                                                            <p>Môn học</p>
                                                             <DataGrid
                                                                 rows={rowsKNDChua}
                                                                 columns={columnsKNDChua}
@@ -1034,6 +1039,7 @@ const EditWatch = () => {
                                                             style={{ height: '100%', width: '100%' }}
                                                             className="datagrid-container"
                                                         >
+                                                            <p>Những môn học có thể dạy</p>
                                                             <DataGrid
                                                                 rows={rowsKNDCo}
                                                                 columns={columnsKNDCo}

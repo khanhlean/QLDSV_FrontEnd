@@ -22,6 +22,10 @@ import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import EventIcon from '@mui/icons-material/Event';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import { withRouter } from 'react-router-dom';
 import './Sidebar.scss';
 
@@ -217,7 +221,7 @@ class MiniDrawer extends React.Component {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <WatchIcon />
+                                        <AssignmentIndOutlinedIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Giảng Viên" sx={{ opacity: open ? 1 : 0 }} />
                                 </ListItemButton>
@@ -239,7 +243,7 @@ class MiniDrawer extends React.Component {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <AddBusinessIcon />
+                                        <SchoolOutlinedIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Sinh Viên" sx={{ opacity: open ? 1 : 0 }} />
                                 </ListItemButton>
@@ -261,7 +265,7 @@ class MiniDrawer extends React.Component {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <EventIcon />
+                                        <ClassOutlinedIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Lớp Tín Chỉ" sx={{ opacity: open ? 1 : 0 }} />
                                 </ListItemButton>
@@ -283,7 +287,7 @@ class MiniDrawer extends React.Component {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <ShoppingCartIcon />
+                                        <AutoStoriesOutlinedIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Môn Học" sx={{ opacity: open ? 1 : 0 }} />
                                 </ListItemButton>

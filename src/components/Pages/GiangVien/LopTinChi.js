@@ -182,13 +182,13 @@ const LopTinChi = () => {
     };
 
     const columns = [
-        { field: 'NamHoc', headerName: 'Năm Học', width: 200 },
-        { field: 'HocKi', headerName: 'Học Kì', width: 100 },
-        { field: 'SLToiDa', headerName: 'Số Lượng Tối Đa', width: 170 },
-        { field: 'NgayBD', headerName: 'Ngày Bắt Đầu', width: 120 },
-        { field: 'NgayKT', headerName: 'Ngày Kết Thúc', width: 120 },
-        { field: 'Active', headerName: 'Trạng Thái', width: 120 },
-        { field: 'MaMH', headerName: 'Mã Môn Học', width: 120 },
+        { field: 'NamHoc', headerName: 'Năm Học', flex: 1 },
+        { field: 'HocKi', headerName: 'Học Kì', flex: 1 },
+        { field: 'SLToiDa', headerName: 'Số Lượng Tối Đa', flex: 1 },
+        { field: 'NgayBD', headerName: 'Ngày Bắt Đầu', flex: 1 },
+        { field: 'NgayKT', headerName: 'Ngày Kết Thúc', flex: 1 },
+        { field: 'Active', headerName: 'Trạng Thái', flex: 1 },
+        { field: 'MaMH', headerName: 'Mã Môn Học', flex: 1 },
     ];
 
     const rows = watches.map((watch) => ({

@@ -92,13 +92,13 @@ const MonHoc = () => {
     };
 
     const columns = [
-        { field: 'TenMH', headerName: 'Tên Môn Học', width: 200 },
-        { field: 'SoTietLT', headerName: 'Số Tiết Lý Thuyết', width: 100 },
-        { field: 'SoTietTH', headerName: 'Số Tiết Thực Hành', width: 170 },
-        { field: 'SoTinChi', headerName: 'Địa Chỉ', width: 120 },
-        { field: 'HeSoCC', headerName: 'Khóa Học', width: 120 },
-        { field: 'HeSoCK', headerName: 'Khóa Học', width: 120 },
-        { field: 'Active', headerName: 'Trạng Thái', width: 120 },
+        { field: 'TenMH', headerName: 'Tên Môn Học', flex: 1 },
+        { field: 'SoTietLT', headerName: 'Số Tiết Lý Thuyết', flex: 1 },
+        { field: 'SoTietTH', headerName: 'Số Tiết Thực Hành', flex: 1 },
+        { field: 'SoTinChi', headerName: 'Địa Chỉ', flex: 1 },
+        { field: 'HeSoCC', headerName: 'Khóa Học', flex: 1 },
+        { field: 'HeSoCK', headerName: 'Khóa Học', flex: 1 },
+        { field: 'Active', headerName: 'Trạng Thái', flex: 1 },
     ];
 
     const rows = watches.map((watch) => ({

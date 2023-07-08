@@ -2,7 +2,10 @@
     // margin-top: 64px;
     margin-left: 64.333px;
 }
-
+.button-container {
+    display: flex;
+    justify-content: center;
+}
 .form_watchlist::before {
     content: '';
     position: absolute;

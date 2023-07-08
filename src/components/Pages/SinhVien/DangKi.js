@@ -612,6 +612,7 @@ const EditWatch = () => {
                             </div>
                         </div>
                         <div className="pl_watches anchor-plp-sections">
+                            <h2>Các lớp đang mở</h2>
                             <section className="pl_section js-plp-section" data-group="1612">
                                 <div style={{ height: 450, width: '100%' }}>
                                     <DataGrid rows={rowsChuaDK} columns={columnsChuaDK} onRowClick={handleRowClick} />
@@ -625,7 +626,7 @@ const EditWatch = () => {
                                         XÓA
                                     </button>
                                 </div>
-
+                                <h2>Các lớp đã đăng kí</h2>
                                 <div style={{ height: 450, width: '100%' }}>
                                     <DataGrid rows={rowsDaDK} columns={columnsDaDK} onRowClick={handleRowClick} />
                                 </div>
