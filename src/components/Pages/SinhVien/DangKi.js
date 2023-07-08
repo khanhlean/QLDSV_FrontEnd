@@ -261,12 +261,13 @@ const EditWatch = () => {
 
     //data
     const columnsChuaDK = [
-        { field: 'MaLTC', headerName: 'Họ Tên', width: 200 },
-        { field: 'NamHoc', headerName: 'Học Vị', width: 100 },
-        { field: 'HocKi', headerName: 'Học Hàm', width: 120 },
-        { field: 'SLToiDa', headerName: 'Phái', width: 100 },
-        { field: 'NgayBD', headerName: 'Ngày Sinh', width: 170 },
-        { field: 'NgayKT', headerName: 'Địa Chỉ', width: 120 },
+        { field: 'MaLTC', headerName: 'Mã lớp tín chỉ', flex: 1 },
+        { field: 'NamHoc', headerName: 'Năm học', flex: 1 },
+        { field: 'HocKi', headerName: 'Học kì', flex: 1 },
+        { field: 'SLToiDa', headerName: 'Số lượng tối đa', flex: 1 },
+        { field: 'SoLuongConLai', headerName: 'Số lượng còn lại', flex: 1 },
+        { field: 'NgayBD', headerName: 'Ngày Bắt đầu', flex: 1 },
+        { field: 'NgayKT', headerName: 'Ngày Kết thúc', flex: 1 },
     ];
 
     const rowsChuaDK = watches.map((watch) => ({
@@ -275,6 +276,7 @@ const EditWatch = () => {
         NamHoc: watch.NamHoc,
         HocKi: watch.HocKi,
         SLToiDa: watch.SLToiDa,
+        SoLuongConLai: watch.SoLuongConLai,
         NgayBD: watch.NgayBD.substring(0, 10),
         NgayKT: watch.NgayKT.substring(0, 10),
     }));
@@ -287,12 +289,12 @@ const EditWatch = () => {
 
     //data phân công
     const columnsDaDK = [
-        { field: 'MaLTC', headerName: 'Họ Tên', width: 200 },
-        { field: 'NamHoc', headerName: 'Học Vị', width: 100 },
-        { field: 'HocKi', headerName: 'Học Hàm', width: 120 },
-        { field: 'SLToiDa', headerName: 'Phái', width: 100 },
-        { field: 'NgayBD', headerName: 'Ngày Sinh', width: 170 },
-        { field: 'NgayKT', headerName: 'Địa Chỉ', width: 120 },
+        { field: 'MaLTC', headerName: 'Mã lớp tín chỉ', flex: 1 },
+        { field: 'NamHoc', headerName: 'Năm học', flex: 1 },
+        { field: 'HocKi', headerName: 'Học kì', flex: 1 },
+        { field: 'SLToiDa', headerName: 'Số lượng tối đa', flex: 1 },
+        { field: 'NgayBD', headerName: 'Ngày Bắt đầu', flex: 1 },
+        { field: 'NgayKT', headerName: 'Ngày Kết thúc', flex: 1 },
     ];
 
     const rowsDaDK = LTC.map((ltc) => ({
@@ -606,7 +608,7 @@ const EditWatch = () => {
                     <div className="watchlist_content">
                         <div className="pl_header">
                             <div className="pl_header__title">
-                                <h1 className="title-72">Giảng Viên</h1>
+                                <h1 className="title-72">Đăng kí môn</h1>
                             </div>
                         </div>
                         <div className="pl_watches anchor-plp-sections">
