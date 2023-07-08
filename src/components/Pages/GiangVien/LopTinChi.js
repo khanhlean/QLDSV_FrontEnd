@@ -1,15 +1,20 @@
 import './Loptinchi.scss';
 import React, { useState, useEffect } from 'react';
 import API from '@/services/api';
-import Sidebar from '@/components/DefaultLayout/Sidebar/Sidebar';
+import Sidebar from '@/components/DefaultLayout/Sidebar/SidebarGV';
 import CloseIcon from '@mui/icons-material/Close';
 import { DataGrid } from '@mui/x-data-grid';
 
 const LopTinChi = () => {
     const [watches, setWatches] = useState([]);
+    const [phong, setPhong] = useState([]);
+    const [LH, setLH] = useState([]);
+    const [LHPH, setLHPH] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [selectedWatch, setSelectedWatch] = useState(null);
+    const [selectedLHvaPhong, setSelectedLHvaPhong] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [showLHPH, setshowLHPH] = useState(false);
 
     const [addNamHoc, setaddNamHoc] = useState('');
     const [addHocKi, setaddHocKi] = useState('');
@@ -24,6 +29,9 @@ const LopTinChi = () => {
     const [editedNgayBD, setEditedNgayBD] = useState(null);
     const [editedNgayKT, setEditedNgayKT] = useState(null);
     const [editedMaMH, setEditedMaMH] = useState(null);
+
+    const [LHId, setLHId] = useState(null);
+    const [phongId, setPhongId] = useState(null);
 
     useEffect(() => {
         if (selectedWatch) {
@@ -53,11 +61,41 @@ const LopTinChi = () => {
         }
     }
 
+    async function fetchLH() {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.get('/loptinchi/hienThiLichHocChuaCoTrongLopTinChi/${selectedWatch.id}', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setLH(response.data.lichHocChuaCo);
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+    }
+
+    async function fetchPhong() {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.get('/loptinchi/hienThiPhongHocChuaCoTrongLopTinChi/${selectedWatch.id}', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setPhong(response.data.phongHocChuaCo);
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+    }
+
     const handleAddGiangVien = async () => {
         try {
             const token = localStorage.getItem('token');
             const response = await API.post(
-                '/monhoc/themmonhoc',
+                '/loptinchi/themloptinchi',
                 {
                     NamHoc: addNamHoc,
                     HocKi: addHocKi,
@@ -84,6 +122,63 @@ const LopTinChi = () => {
         }
         setShowAddForm(false);
         fetchData();
+    };
+
+    const handleAddPHLH = async () => {
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await API.post(
+                '/loptinchi/themLichHoc',
+                {
+                    MaLTC: selectedWatch.id,
+                    MaTGB: LHId,
+                    MaPhongHoc: phongId,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+        }
+        handleLH();
+    };
+
+    const handleDeletePHLH = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.post(
+                '/loptinchi/xoaLichHocVaPhongHoc',
+                {
+                    MaLTC: selectedWatch.id,
+                    MaTGB: selectedLHvaPhong.MaTGB,
+                    MaPhongHoc: selectedLHvaPhong.MaPhongHoc,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+        }
+        handleLH();
     };
 
     const columns = [
@@ -114,9 +209,48 @@ const LopTinChi = () => {
         setSelectedWatch(selectedRow);
     };
 
+    const columnsLHvaPhong = [
+        { field: 'MaTGB', headerName: 'Mã TGB', width: 200 },
+        { field: 'Thu', headerName: 'Thứ', width: 100 },
+        { field: 'Buoi', headerName: 'Buổi', width: 170 },
+    ];
+
+    const rowsLHvaPhong = LHPH.map((lhph) => ({
+        id: lhph.MaTGB,
+        MaTGB: lhph.MaTGB,
+        Thu: lhph.Thu,
+        Buoi: lhph.Buoi,
+        MaPhongHoc: lhph.MaPhongHoc,
+    }));
+
+    const handleRowClickLHvaPhong = (params) => {
+        // Lấy thông tin đồng hồ từ hàng được bấm
+        const selectedRow = params.row;
+        setSelectedLHvaPhong(selectedRow);
+    };
+
     //xử lý editing
     const handleEditClick = () => {
         setIsEditing(true);
+    };
+
+    const handleLH = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.get(`/loptinchi/hienThiLichHocVaPhongHocCuaLopTinChi/${selectedWatch.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(response.data.success);
+            setLHPH(response.data.lichHocPhongHoc);
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+        fetchLH();
+        fetchPhong();
+        setshowLHPH(true);
     };
 
     const handleSaveClick = async () => {
@@ -125,7 +259,7 @@ const LopTinChi = () => {
             const token = localStorage.getItem('token');
 
             const response = await API.put(
-                `/monhoc/suaMonHoc/${selectedWatch.id}`,
+                `/loptinchi/sualoptinchi/${selectedWatch.id}`,
                 {
                     NamHoc: editedNamHoc,
                     HocKi: editedHocKi,
@@ -273,13 +407,6 @@ const LopTinChi = () => {
                                                     <CloseIcon />
                                                 </button>
                                                 <h2>Thông Tin Lớp Tín Chỉ</h2>
-                                                {/* <div class="image-container">
-                                                    <img
-                                                        src={selectedWatch.image}
-                                                        alt={selectedWatch.name}
-                                                        className="scaled-img"
-                                                    />
-                                                </div> */}
                                                 <form>
                                                     {isEditing ? (
                                                         <>
@@ -338,6 +465,13 @@ const LopTinChi = () => {
                                                         </>
                                                     )}
                                                     <div className="btn-container">
+                                                        <button
+                                                            type="button"
+                                                            className="delete-button"
+                                                            onClick={handleLH}
+                                                        >
+                                                            <span>LỊCH HỌC</span>
+                                                        </button>
                                                         {isEditing ? (
                                                             <button
                                                                 type="button"
@@ -366,6 +500,70 @@ const LopTinChi = () => {
                                                 </form>
                                             </div>
                                         </div>
+
+                                        {showLHPH && (
+                                            <div>
+                                                <div className="data-grid-phlh-overlay">
+                                                    <div className="data-grid-phlh-container">
+                                                        <button
+                                                            className="close-button"
+                                                            onClick={() => setshowLHPH(false)}
+                                                        >
+                                                            <CloseIcon />
+                                                        </button>
+                                                        <select
+                                                            id="LHComboBox"
+                                                            value={LHId}
+                                                            onChange={(e) => setLHId(e.target.value)}
+                                                        >
+                                                            <option value="">-- Chọn Buổi Học --</option>
+                                                            {LH.map((LH) => (
+                                                                <option key={LH.MaTGB} value={LH.MaTGB}>
+                                                                    {`Thứ ${LH.Thu} - ${LH.Buoi ? 'Sáng' : 'Chiều'}`}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                        <select
+                                                            id="phongComboBox"
+                                                            value={phongId}
+                                                            onChange={(e) => setPhongId(e.target.value)}
+                                                        >
+                                                            <option value="">-- Chọn Phòng Học --</option>
+                                                            {phong.map((phong) => (
+                                                                <option key={phong.MaPhongHoc} value={phong.MaPhongHoc}>
+                                                                    {phong.TenPhong}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                        <div className="button-container">
+                                                            <button
+                                                                className="add-table-phlh-btn"
+                                                                onClick={handleAddPHLH}
+                                                            >
+                                                                THÊM
+                                                            </button>
+                                                            <button
+                                                                className="remove-table-phlh-btn"
+                                                                onClick={handleDeletePHLH}
+                                                            >
+                                                                XÓA
+                                                            </button>
+                                                        </div>
+
+                                                        <div
+                                                            style={{ height: '100%', width: '100%' }}
+                                                            className="datagrid-container"
+                                                        >
+                                                            <DataGrid
+                                                                rows={rowsLHvaPhong}
+                                                                columns={columnsLHvaPhong}
+                                                                onRowClick={handleRowClickLHvaPhong}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                                 <div className="pl_section__header">

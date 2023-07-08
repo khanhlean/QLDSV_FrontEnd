@@ -18,26 +18,6 @@ const Menu = () => {
         }
     }, []);
 
-    // const getStaffProfile = async () => {
-    //     try {
-    //         const token = localStorage.getItem('token');
-    //         const response = await API.get('/account/get-staff', {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         });
-    //         const { data } = response;
-    //         if (data.success) {
-    //             const staffProfile = data.data;
-    //             console.log(staffProfile); // Thông tin người dùng nhân viên
-    //         } else {
-    //             console.log(data.message); // In thông báo lỗi từ server
-    //         }
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
     return (
         <div>
             <div>

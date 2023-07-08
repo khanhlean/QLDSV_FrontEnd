@@ -1,56 +1,56 @@
-import './EditWatch.scss';
+import './MonHoc.scss';
 import React, { useState, useEffect } from 'react';
-import { format } from 'date-fns';
-import urlImg from '@/services/urlImg';
 import API from '@/services/api';
-import Sidebar from '@/components/DefaultLayout/Sidebar/Sidebar';
+import Sidebar from '@/components/DefaultLayout/Sidebar/SidebarGV';
 import CloseIcon from '@mui/icons-material/Close';
 import { DataGrid } from '@mui/x-data-grid';
 
-const LopTinChi = () => {
+const MonHoc = () => {
     const [watches, setWatches] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [selectedWatch, setSelectedWatch] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
 
-    const [addNamHoc, setaddNamHoc] = useState('');
-    const [addHocKi, setaddHocKi] = useState('');
-    const [addSLToiDa, setaddSLToiDa] = useState('');
-    const [addNgayBD, setaddNgayBD] = useState('');
-    const [addNgayKT, setaddNgayKT] = useState('');
-    const [addMaMH, setaddMaMH] = useState('');
+    const [addTenMH, setaddTenMH] = useState(null);
+    const [addSoTietLT, setaddSoTietLT] = useState(null);
+    const [addSoTietTH, setaddQSoTietTH] = useState(null);
+    const [addSoTinChi, setaddSoTinChi] = useState(null);
+    const [addHeSoCC, setaddHeSoCC] = useState(null);
+    const [addHeSoGK, setaddHeSoGK] = useState(null);
+    const [addHeSoCK, setaddHeSoCK] = useState(null);
 
-    const [editedNamHoc, setEditedNamHoc] = useState(null);
-    const [editedSLToiDa, setEditedSLToiDa] = useState(null);
-    const [editedNgayBD, setEditedNgayBD] = useState(null);
-    const [editedNgayKT, setEditedNgayKT] = useState(null);
-    const [editedMaMH, setEditedMaMH] = useState(null);
-    const [editedHocKi, setEditedHocKi] = useState(null);
+    const [editedTenMH, setEditedTenMH] = useState(null);
+    const [editedSoTietLT, setEditedSoTietLT] = useState(null);
+    const [editedSoTietTH, setEditedQSoTietTH] = useState(null);
+    const [editedSoTinChi, setEditedSoTinChi] = useState(null);
+    const [editedHeSoCC, setEditedKHeSoCC] = useState(null);
+    const [editedHeSoGK, setEditedHeSoGK] = useState(null);
+    const [editedHeSoCK, setEditedHeSoCK] = useState(null);
 
     useEffect(() => {
         if (selectedWatch) {
-            //setEditedMaGV(selectedWatch.MaGV);
-            editedNamHoc(selectedWatch.NamHoc);
-            editedSLToiDa(selectedWatch.SLToiDa);
-            editedHocKi(selectedWatch.HocKi);
-            editedNgayBD(selectedWatch.NgayBD);
-            editedNgayKT(selectedWatch.NgayKT);
-            editedMaMH(selectedWatch.MaMH);
+            setEditedTenMH(selectedWatch.TenMH);
+            setEditedSoTietLT(selectedWatch.SoTietLT);
+            setEditedQSoTietTH(selectedWatch.SoTietTH);
+            setEditedSoTinChi(selectedWatch.SoTinChi);
+            setEditedKHeSoCC(selectedWatch.HeSoCC);
+            setEditedHeSoGK(selectedWatch.HeSoGK);
+            setEditedHeSoCK(selectedWatch.HeSoCK);
         }
 
         fetchData();
-    }, [selectedWatch, editedHocKi, editedMaMH, editedNamHoc, editedNgayBD, editedNgayKT, editedSLToiDa]);
+    }, [selectedWatch]);
 
     async function fetchData() {
         try {
             const token = localStorage.getItem('token');
             //console.log(token);
-            const response = await API.get('/loptinchi/getallloptinchi', {
+            const response = await API.get('/monhoc/getallmonhoc', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setWatches(response.data.lopTinChi);
+            setWatches(response.data.monhoc);
         } catch (error) {
             console.error(error);
             // Xử lý lỗi
@@ -61,14 +61,15 @@ const LopTinChi = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await API.post(
-                '/loptinchi/themloptinchi',
+                '/monhoc/themmonhoc',
                 {
-                    NamHoc: addNamHoc,
-                    HocKi: addHocKi,
-                    SLToiDa: addSLToiDa,
-                    NgayBD: addNgayBD,
-                    NgayKT: addNgayKT,
-                    MaMH: addMaMH,
+                    TenMH: addTenMH,
+                    SoTietLT: addSoTietLT,
+                    SoTietTH: addSoTietTH,
+                    SoTinChi: addSoTinChi,
+                    HeSoCC: addHeSoCC,
+                    HeSoGK: addHeSoGK,
+                    HeSoCK: addHeSoCK,
                 },
                 {
                     headers: {
@@ -91,33 +92,31 @@ const LopTinChi = () => {
     };
 
     const columns = [
-        { field: 'NamHoc', headerName: 'Năm Học', width: 200 },
-        { field: 'HocKi', headerName: 'Học Kì', width: 100 },
-        { field: 'SLToiDa', headerName: 'Số Lượng Tối Đa', width: 170 },
-        { field: 'NgayBD', headerName: 'Ngày Bắt Đầu', width: 120 },
-        { field: 'NgayKT', headerName: 'Ngày Kết Thúc', width: 120 },
+        { field: 'TenMH', headerName: 'Tên Môn Học', width: 200 },
+        { field: 'SoTietLT', headerName: 'Số Tiết Lý Thuyết', width: 100 },
+        { field: 'SoTietTH', headerName: 'Số Tiết Thực Hành', width: 170 },
+        { field: 'SoTinChi', headerName: 'Địa Chỉ', width: 120 },
+        { field: 'HeSoCC', headerName: 'Khóa Học', width: 120 },
+        { field: 'HeSoCK', headerName: 'Khóa Học', width: 120 },
         { field: 'Active', headerName: 'Trạng Thái', width: 120 },
-        { field: 'MaMH', headerName: 'Mã Môn Học', width: 120 },
     ];
 
     const rows = watches.map((watch) => ({
-        id: watch.MaLTC,
-        MaGV: watch.MaLTC,
-        NamHoc: watch.NamHoc,
-        HocKi: watch.HocKi,
-        SLToiDa: watch.SLToiDa,
-        NgayBD: watch.NgayBD.substring(0, 10),
-        NgayKT: watch.NgayKT.substring(0, 10),
+        id: watch.MaMH,
+        MaGV: watch.MaMH,
+        TenMH: watch.TenMH,
+        SoTietLT: watch.SoTietLT,
+        SoTietTH: watch.SoTietTH,
+        SoTinChi: watch.SoTinChi,
+        HeSoCC: watch.HeSoCC,
+        HeSoGK: watch.HeSoGK,
+        HeSoCK: watch.HeSoCK,
         Active: watch.Active ? 'Đang Hoạt Động' : 'Đã Nghỉ',
-        MaMH: watch.MaMH,
     }));
 
     const handleRowClick = (params) => {
         // Lấy thông tin đồng hồ từ hàng được bấm
         const selectedRow = params.row;
-        console.log(selectedWatch.NamHoc);
-        console.log(selectedWatch.id);
-        console.log('ádfsádfsd');
         setSelectedWatch(selectedRow);
     };
 
@@ -130,17 +129,18 @@ const LopTinChi = () => {
         // Thực hiện các thao tác lưu dữ liệu tại đây
         try {
             const token = localStorage.getItem('token');
+
             const response = await API.put(
-                `/loptinchi/sualoptinchi/${selectedWatch.id}`,
+                `/monhoc/suaMonHoc/${selectedWatch.id}`,
                 {
-                    //watchId: selectedWatch.id,
-                    NamHoc: editedNamHoc,
-                    HocKi: editedHocKi,
-                    SLToiDa: editedSLToiDa,
-                    NgayBD: editedNgayBD,
-                    NgayKT: editedNgayKT,
-                    MaMH: editedMaMH,
-                    //Active:
+                    MaMH: selectedWatch.id,
+                    TenMH: editedTenMH,
+                    SoTietLT: editedSoTietLT,
+                    SoTietTH: editedSoTietTH,
+                    SoTinChi: editedSoTinChi,
+                    HeSoCC: editedHeSoCC,
+                    HeSoGK: editedHeSoGK,
+                    HeSoCK: editedHeSoCK,
                 },
                 {
                     headers: {
@@ -154,12 +154,13 @@ const LopTinChi = () => {
                 // Xử lý thành công sau khi cập nhật đồng hồ
                 setSelectedWatch({
                     ...selectedWatch,
-                    NamHoc: editedNamHoc,
-                    HocKi: editedHocKi,
-                    SLToiDa: editedSLToiDa,
-                    NgayBD: editedNgayBD,
-                    NgayKT: editedNgayKT,
-                    MaMH: editedMaMH,
+                    TenMH: editedTenMH,
+                    SoTietLT: editedSoTietLT,
+                    SoTietTH: editedSoTietTH,
+                    SoTinChi: editedSoTinChi,
+                    HeSoCC: editedHeSoCC,
+                    HeSoGK: editedHeSoGK,
+                    HeSoCK: editedHeSoCK,
                 });
             } else {
                 console.log('Failed to update watch');
@@ -176,7 +177,7 @@ const LopTinChi = () => {
     const handleDeleteWatch = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await API.delete(`/loptinchi/xoaloptinchi/${selectedWatch.id}`, {
+            const response = await API.delete(`/monhoc/xoaMonHoc/${selectedWatch.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -193,19 +194,6 @@ const LopTinChi = () => {
         } catch (error) {
             console.error(error);
             // Xử lý lỗi
-
-            const confirmed = window.confirm('Xóa mềm?');
-            if (confirmed) {
-                await API.put(`/sinhvien/choSinhVienNghi/${selectedWatch.id}`, null, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                console.log('Sinh viên đã được xóa mềm thành công');
-                setSelectedWatch(false);
-            } else {
-                console.log('Không xóa giảng viên');
-            }
         }
     };
 
@@ -218,7 +206,7 @@ const LopTinChi = () => {
                     <div className="watchlist_content">
                         <div className="pl_header">
                             <div className="pl_header__title">
-                                <h1 className="title-72">Sinh Viên</h1>
+                                <h1 className="title-72">Môn Học</h1>
                             </div>
                         </div>
                         <div className="pl_watches anchor-plp-sections">
@@ -232,42 +220,47 @@ const LopTinChi = () => {
                                             <h4>Thêm</h4>
                                             <input
                                                 type="text"
-                                                placeholder="Năm Học"
-                                                value={addNamHoc}
-                                                onChange={(e) => setaddNamHoc(e.target.value)}
-                                            />
-
-                                            <input
-                                                type="text"
-                                                placeholder="Học Kì"
-                                                value={addHocKi}
-                                                onChange={(e) => setaddHocKi(e.target.value)}
+                                                placeholder="Tên Môn Học"
+                                                value={addTenMH}
+                                                onChange={(e) => setaddTenMH(e.target.value)}
                                             />
 
                                             <input
                                                 type="number"
-                                                placeholder="Số Lượng Tối Đa"
-                                                value={addSLToiDa}
-                                                onChange={(e) => setaddSLToiDa(e.target.value)}
+                                                placeholder="Số Tiết Lý Thuyết"
+                                                value={addSoTietLT}
+                                                onChange={(e) => setaddSoTietLT(e.target.value)}
                                             />
                                             <input
-                                                type="text"
-                                                placeholder="Ngày Bắt Đầu"
-                                                value={addNgayBD}
-                                                onChange={(e) => setaddNgayBD(e.target.value)}
+                                                type="number"
+                                                placeholder="Số Tiết Thực Hành"
+                                                value={addSoTietTH}
+                                                onChange={(e) => setaddQSoTietTH(e.target.value)}
+                                            />
+                                            <input
+                                                type="number"
+                                                placeholder="Số Tín Chỉ"
+                                                value={addSoTinChi}
+                                                onChange={(e) => setaddSoTinChi(e.target.value)}
                                             />
 
                                             <input
-                                                type="text"
-                                                placeholder="Ngày Kết Thúc"
-                                                value={addNgayKT}
-                                                onChange={(e) => setaddNgayKT(e.target.value)}
+                                                type="number"
+                                                placeholder="Chuyên Cần"
+                                                value={addHeSoCC}
+                                                onChange={(e) => setaddHeSoCC(e.target.value)}
                                             />
                                             <input
-                                                type="text"
-                                                placeholder="Mã Môn Học"
-                                                value={addMaMH}
-                                                onChange={(e) => setaddMaMH(e.target.value)}
+                                                type="number"
+                                                placeholder="Giữa Kì"
+                                                value={addHeSoGK}
+                                                onChange={(e) => setaddHeSoGK(e.target.value)}
+                                            />
+                                            <input
+                                                type="number"
+                                                placeholder="Cuối kì"
+                                                value={addHeSoCK}
+                                                onChange={(e) => setaddHeSoCK(e.target.value)}
                                             />
 
                                             <button className="add-button" onClick={handleAddGiangVien}>
@@ -293,7 +286,7 @@ const LopTinChi = () => {
                                                 >
                                                     <CloseIcon />
                                                 </button>
-                                                <h2>Thông Tin Sinh Viên</h2>
+                                                <h2>Thông Tin Môn Học</h2>
                                                 <div class="image-container">
                                                     <img
                                                         src={selectedWatch.image}
@@ -306,52 +299,62 @@ const LopTinChi = () => {
                                                         <>
                                                             <input
                                                                 type="text"
-                                                                placeholder="Năm Học"
-                                                                value={editedNamHoc}
-                                                                onChange={(e) => setEditedNamHoc(e.target.value)}
-                                                            />
-
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Học Kì"
-                                                                value={editedHocKi}
-                                                                onChange={(e) => setEditedHocKi(e.target.value)}
+                                                                placeholder="Tên Môn Học"
+                                                                value={editedTenMH}
+                                                                onChange={(e) => setEditedTenMH(e.target.value)}
                                                             />
 
                                                             <input
                                                                 type="number"
-                                                                placeholder="Số Lượng Tối Đa"
-                                                                value={addSLToiDa}
-                                                                onChange={(e) => setEditedSLToiDa(e.target.value)}
+                                                                placeholder="Số Tiết Lý Thuyết"
+                                                                value={editedSoTietLT}
+                                                                onChange={(e) => setEditedSoTietLT(e.target.value)}
                                                             />
                                                             <input
-                                                                type="text"
-                                                                placeholder="Ngày Bắt Đầu"
-                                                                value={editedNgayBD}
-                                                                onChange={(e) => setEditedNgayBD(e.target.value)}
+                                                                type="number"
+                                                                placeholder="Số Tiết Thực Hành"
+                                                                value={editedSoTietTH}
+                                                                onChange={(e) => setEditedQSoTietTH(e.target.value)}
+                                                            />
+                                                            <input
+                                                                type="number"
+                                                                placeholder="Số Tín Chỉ"
+                                                                value={editedSoTinChi}
+                                                                onChange={(e) => setEditedSoTinChi(e.target.value)}
                                                             />
 
                                                             <input
-                                                                type="text"
-                                                                placeholder="Ngày Kết Thúc"
-                                                                value={editedNgayKT}
-                                                                onChange={(e) => setEditedNgayKT(e.target.value)}
+                                                                type="number"
+                                                                placeholder="Chuyên Cần"
+                                                                value={editedHeSoCC}
+                                                                onChange={(e) => setEditedKHeSoCC(e.target.value)}
                                                             />
                                                             <input
-                                                                type="text"
-                                                                placeholder="Mã Môn Học"
-                                                                value={editedMaMH}
-                                                                onChange={(e) => setEditedMaMH(e.target.value)}
+                                                                type="number"
+                                                                placeholder="Giữa Kì"
+                                                                value={editedHeSoGK}
+                                                                onChange={(e) => setEditedHeSoGK(e.target.value)}
+                                                            />
+                                                            <input
+                                                                type="number"
+                                                                placeholder="Cuối kì"
+                                                                value={editedHeSoCK}
+                                                                onChange={(e) => setEditedHeSoCK(e.target.value)}
                                                             />
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <p className="text">Họ và tTên: {selectedWatch.HoTen}</p>
-                                                            <p className="text">Phái: {selectedWatch.Phai}</p>
-                                                            <p className="text">Ngày Sinh: {selectedWatch.NgaySinh}</p>
-                                                            <p className="text">Địa Chỉ: {selectedWatch.DiaChi}</p>
-                                                            <p className="text">Khóa Học: {selectedWatch.KhoaHoc}</p>
-                                                            <p className="text">Mã Lớp: {selectedWatch.MaLop}</p>
+                                                            <p className="text">Tên Môn Học: {selectedWatch.TenMH}</p>
+                                                            <p className="text">
+                                                                Số Tiết Lý Thuyết: {selectedWatch.SoTietLT}
+                                                            </p>
+                                                            <p className="text">
+                                                                Số Tiết Thực Hành: {selectedWatch.SoTietTH}
+                                                            </p>
+                                                            <p className="text">Số Tín Chỉ: {selectedWatch.SoTinChi}</p>
+                                                            <p className="text">Chuyên Cần: {selectedWatch.HeSoCC}</p>
+                                                            <p className="text">Giữa Kì: {selectedWatch.HeSoGK}</p>
+                                                            <p className="text">Cuối kì: {selectedWatch.HeSoCK}</p>
                                                         </>
                                                     )}
                                                     <div className="btn-container">
@@ -387,7 +390,7 @@ const LopTinChi = () => {
                                 )}
                                 <div className="pl_section__header">
                                     <button className="add-watch-button" onClick={() => setShowAddForm(true)}>
-                                        THÊM Sinh VIÊN
+                                        THÊM MÔN HỌC
                                     </button>
                                 </div>
                             </section>
@@ -399,4 +402,4 @@ const LopTinChi = () => {
     );
 };
 
-export default LopTinChi;
+export default MonHoc;

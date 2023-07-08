@@ -2,11 +2,10 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 
 import Login from '@/components/Auth/Login';
 import Menu from './components/Menu/Menu';
-import EditWatch from './components/Pages/Giangvien';
-import SinhVien from './components/Pages/SinhVien';
-import Order from './components/Pages/Order';
-import MonHoc from './components/Pages/MonHoc';
-import LopTinChi from './components/Pages/LopTinChi';
+import EditWatch from './components/Pages/GiangVien/Giangvien';
+import SinhVien from './components/Pages/GiangVien/SinhVien';
+import MonHoc from './components/Pages/GiangVien/MonHoc';
+import LopTinChi from './components/Pages/GiangVien/LopTinChi';
 
 function App() {
     const role = localStorage.getItem('role');
@@ -19,6 +18,10 @@ function App() {
                 <Route path="/giangvien/sinhvien" component={SinhVien} />
                 <Route path="/giangvien/monhoc" component={MonHoc} />
                 <Route path="/giangvien/loptinchi" component={LopTinChi} />
+
+                <Route path="/sinhvien/menu" component={Menu} />
+                <Route path="/sinhvien/xemdiem" component={Menu} />
+                <Route path="/sinhvien/dangkimon" component={Menu} />
             </Switch>
         </Router>
     );

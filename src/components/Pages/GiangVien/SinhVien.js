@@ -1,9 +1,9 @@
-import './EditWatch.scss';
+import './SinhVien.scss';
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import urlImg from '@/services/urlImg';
 import API from '@/services/api';
-import Sidebar from '@/components/DefaultLayout/Sidebar/Sidebar';
+import Sidebar from '@/components/DefaultLayout/Sidebar/SidebarGV';
 import CloseIcon from '@mui/icons-material/Close';
 import { DataGrid } from '@mui/x-data-grid';
 

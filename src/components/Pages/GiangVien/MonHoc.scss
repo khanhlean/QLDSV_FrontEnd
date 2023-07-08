@@ -82,7 +82,7 @@ ul {
     border: 0!important;
 } */
 
-.show-order-form-overlay {
+.add-watch-form-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -94,21 +94,21 @@ ul {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 99999;
 
-    .show-order-form-container {
+    .add-watch-form-container {
+        position: relative;
         background-color: #fff;
         padding: 20px;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        position: relative;
-        height: auto;
         width: 60%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         display: flex;
+        justify-content: center;
+        align-items: center;
         flex-direction: column;
-        //align-items: center;
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
+        h4 {
+            margin-bottom: 10px;
+            font-size: 18px;
         }
 
         input {
@@ -117,53 +117,178 @@ ul {
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+
+        /* EditWatch.scss */
+
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            appearance: none;
+            background: transparent;
+            margin-bottom: 10px;
 
             &:focus {
                 outline: none;
-                border: none;
-                box-shadow: none;
+                border-color: #000;
             }
         }
 
-        .info-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .dropzone {
             width: 100%;
-            margin-left: 20px;
-        }
-
-        .text {
             margin-bottom: 10px;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+
+            p {
+                font-size: 14px;
+                margin: 0;
+            }
+
+            &.active {
+                border-color: #ff0000;
+            }
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             font-size: 16px;
-            color: #333;
-            line-height: 1.4;
-            text-align: left;
-        }
-
-        form {
-            margin: 0;
-        }
-
-        .btn-container {
+            color: #fff;
+            background-color: #292929;
+            width: 24px;
+            height: 24px;
             display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: auto;
+            border-radius: 4px;
+            border: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            }
         }
 
-        .button {
+        .add-button {
             font-size: 16px;
             color: #fff;
             background-color: #292929;
             width: auto;
             height: 30px;
-            display: inline-block;
+            display: flex;
             border-radius: 4px;
             border: none;
-            margin-left: 10px;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            }
+        }
+    }
+}
+
+.show-watch-form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+
+    .show-watch-form-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        height: 60%;
+        width: 60%;
+        display: grid;
+        grid-template-columns: 0.4fr 1fr;
+        grid-column-gap: 20px;
+        align-items: center;
+
+        h2 {
+            grid-column: 1 / -1;
+            text-align: center;
+            align-self: center;
+        }
+
+        .scaled-img {
+            width: 250px;
+            height: 250px;
+            margin-right: 60px;
+            grid-row: 2 / span 2;
+        }
+
+        input {
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+
+            :focus {
+                outline: none;
+                border: none;
+                box-shadow: none;
+            }
+        }
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            appearance: none;
+            background: transparent;
+            margin-bottom: 10px;
+
+            &:focus {
+                outline: none;
+                border-color: #000;
+            }
+        }
+
+        .text {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .btn-container {
+            grid-column: 2;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .edit-button,
+        .delete-button {
+            font-size: 16px;
+            color: #fff;
+            background-color: #292929;
+            width: 100px;
+            height: 70px;
+            display: flex;
+            border-radius: 4px;
+            border: none;
+            justify-content: center;
+            align-items: center;
+            grid-column: 2;
             cursor: pointer;
 
             &:hover {
@@ -192,6 +317,216 @@ ul {
             }
         }
     }
+}
+
+.data-grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+
+    .data-grid-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        height: 90%;
+        width: 74%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #292929;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            border-radius: 4px;
+            border: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .datagrid-container {
+            margin-top: 20px;
+            margin-bottom: 40px;
+            flex: 1;
+            width: 100%;
+            overflow: auto;
+        }
+
+        .add-ltc-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #292929;
+            width: 70px;
+            height: 40px;
+            display: flex;
+            border-radius: 4px;
+            border: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            &:hover {
+                background-color: #555555;
+            }
+        }
+
+        .add-knd-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #292929;
+            width: auto;
+            height: 40px;
+            display: flex;
+            border-radius: 4px;
+            border: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            &:hover {
+                background-color: #555555;
+            }
+        }
+
+        .button-container {
+            display: flex;
+        }
+
+        .add-table-knd-btn,
+        .remove-table-knd-btn {
+            flex: 1;
+            margin-right: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #292929;
+            width: 70px;
+            height: 40px;
+            border-radius: 4px;
+            border: none;
+        }
+    }
+}
+
+.tkb-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+
+    .tkb-table {
+        margin: 0 auto;
+        border-collapse: collapse;
+        display: flex;
+        flex-direction: row;
+
+        th,
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        td:first-child {
+            text-align: center;
+        }
+
+        td:nth-child(2) {
+            text-align: left;
+        }
+
+        tr {
+            td {
+                &:nth-child(n + 2) {
+                    background-color: transparent;
+                    color: black;
+                }
+            }
+        }
+    }
+}
+
+.add-watch-button {
+    color: #fff;
+    background-color: #292929;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+    align-items: center;
+
+    &:hover {
+        background-color: #555555;
+    }
+}
+
+.ts_watch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 50%;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    padding: 0;
+    text-align: center;
+}
+
+.ts_watch__tile {
+    align-self: stretch;
+    height: 100%;
+    padding-bottom: 60px;
+    margin: 0 0.5px;
+    color: inherit;
+    text-decoration: none;
+}
+.ts_watch__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .sc_watch__label-list {

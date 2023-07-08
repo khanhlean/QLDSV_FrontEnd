@@ -1,8 +1,9 @@
-import './EditWatch.scss';
+import './GiangVien.scss';
+
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import API from '@/services/api';
-import Sidebar from '@/components/DefaultLayout/Sidebar/Sidebar';
+import Sidebar from '@/components/DefaultLayout/Sidebar/SidebarGV';
 import CloseIcon from '@mui/icons-material/Close';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -699,16 +700,7 @@ const EditWatch = () => {
                                                                 value={editedName}
                                                                 onChange={(e) => setEditedName(e.target.value)}
                                                             />
-                                                            {/* <input
-                                                                type="text"
-                                                                value={editedHocVi}
-                                                                onChange={(e) => setEditedPrice(e.target.value)}
-                                                            /> */}
-                                                            {/* <input
-                                                                type="text"
-                                                                value={editedHocHam}
-                                                                onChange={(e) => seteditedHocHam(e.target.value)}
-                                                            /> */}
+
                                                             <select
                                                                 id="hocViComboBox"
                                                                 value={editedHocVi}
@@ -726,20 +718,7 @@ const EditWatch = () => {
                                                                 <option value="Giáo Sư">Giáo Sư</option>
                                                                 <option value="Phó Giáo Sư">Phó Giáo Sư</option>
                                                             </select>
-                                                            {/* <input
-                                                                type="text"
-                                                                value={editedLine}
-                                                                onChange={(e) => setEditedQuantity(e.target.value)}
-                                                            /> */}
-                                                            {/* <input
-                                                                type="text"
-                                                                value={editedLine}
-                                                                onChange={(e) => {
-                                                                    const inputValue = e.target.value;
-                                                                    const value = inputValue === 'Nam' ? 1 : 0;
-                                                                    setEditedQuantity(value);
-                                                                }}
-                                                            /> */}
+
                                                             <select
                                                                 id="lineComboBox"
                                                                 value={editedLine}
