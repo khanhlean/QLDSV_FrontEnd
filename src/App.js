@@ -7,6 +7,8 @@ import SinhVien from './components/Pages/GiangVien/SinhVien';
 import MonHoc from './components/Pages/GiangVien/MonHoc';
 import LopTinChi from './components/Pages/GiangVien/LopTinChi';
 
+import DangKi from './components/Pages/SinhVien/DangKi';
+
 function App() {
     const role = localStorage.getItem('role');
     return (
@@ -21,7 +23,7 @@ function App() {
 
                 <Route path="/sinhvien/menu" component={Menu} />
                 <Route path="/sinhvien/xemdiem" component={Menu} />
-                <Route path="/sinhvien/dangkimon" component={Menu} />
+                <Route path="/sinhvien/dangkimon" component={DangKi} />
             </Switch>
         </Router>
     );
