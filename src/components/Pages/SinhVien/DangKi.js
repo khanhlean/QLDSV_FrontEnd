@@ -226,6 +226,8 @@ const EditWatch = () => {
             console.log('Lỗi khi gọi API:', error);
         }
         handleKhaNangDayClick();
+        fetchData();
+        LTCData();
     };
 
     const handleDeleteKND = async () => {
@@ -233,10 +235,9 @@ const EditWatch = () => {
             const token = localStorage.getItem('token');
 
             const response = await API.post(
-                '/giangvien/xoaKhaNangDay',
+                '/sinhvien/huyDangKi1LopTinChi',
                 {
-                    MaGV: selectedWatch.MaGV,
-                    MaMH: selectedKNDCo.MaMH,
+                    MaLTC: selectedWatch.MaLTC,
                 },
                 {
                     headers: {
@@ -254,6 +255,8 @@ const EditWatch = () => {
             console.log('Lỗi khi gọi API:', error);
         }
         handleKhaNangDayClick();
+        fetchData();
+        LTCData();
     };
 
     //data
@@ -624,58 +627,6 @@ const EditWatch = () => {
                                 <div style={{ height: 450, width: '100%' }}>
                                     <DataGrid rows={rowsDaDK} columns={columnsDaDK} onRowClick={handleRowClick} />
                                 </div>
-
-                                {showAddForm && (
-                                    <div className="add-watch-form-overlay">
-                                        <div className="add-watch-form-container">
-                                            <button className="close-button" onClick={() => setShowAddForm(false)}>
-                                                <CloseIcon />
-                                            </button>
-                                            <h4>Thêm</h4>
-                                            <input
-                                                type="text"
-                                                placeholder="Họ và Tên"
-                                                value={addName}
-                                                onChange={(e) => setaddName(e.target.value)}
-                                            />
-                                            <input
-                                                type="text"
-                                                placeholder="Học Vị"
-                                                value={addHocVi}
-                                                onChange={(e) => setaddHocVi(e.target.value)}
-                                            />
-                                            <input
-                                                type="text"
-                                                placeholder="Học Hàm"
-                                                value={addHocHam}
-                                                onChange={(e) => setaddHocHam(e.target.value)}
-                                            />
-
-                                            <select id="lineComboBox" value={addPhai} onChange={handleAddPhaiChange}>
-                                                <option value="1">Nam</option>
-                                                <option value="0">Nữ</option>
-                                            </select>
-
-                                            <input
-                                                type="text"
-                                                placeholder="Ngày Sinh"
-                                                value={addNgaySinh}
-                                                onChange={(e) => handleDateChange(e.target.value)}
-                                            />
-
-                                            <input
-                                                type="text"
-                                                placeholder="Địa Chỉ"
-                                                value={addDiaChi}
-                                                onChange={(e) => setaddDiaChi(e.target.value)}
-                                            />
-
-                                            <button className="add-button" onClick={handleAddGiangVien}>
-                                                <span>Xác Nhận</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
                             </section>
                         </div>
                     </div>
