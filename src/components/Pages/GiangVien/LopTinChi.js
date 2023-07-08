@@ -64,7 +64,7 @@ const LopTinChi = () => {
     async function fetchLH() {
         try {
             const token = localStorage.getItem('token');
-            const response = await API.get('/loptinchi/hienThiLichHocChuaCoTrongLopTinChi/${selectedWatch.id}', {
+            const response = await API.get(`/loptinchi/hienThiLichHocChuaCoTrongLopTinChi/${selectedWatch.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -79,7 +79,7 @@ const LopTinChi = () => {
     async function fetchPhong() {
         try {
             const token = localStorage.getItem('token');
-            const response = await API.get('/loptinchi/hienThiPhongHocChuaCoTrongLopTinChi/${selectedWatch.id}', {
+            const response = await API.get(`/loptinchi/hienThiPhongHocChuaCoTrongLopTinChi/${selectedWatch.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

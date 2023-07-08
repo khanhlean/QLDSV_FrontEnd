@@ -14,6 +14,10 @@ const EditWatch = () => {
     const [KNDChua, setKNDChua] = useState([]);
     const [TGBChua, setTGBChua] = useState([]);
     const [TGBCo, setTGBCo] = useState([]);
+
+    const [daPC, setdaPC] = useState([]);
+    const [chuaPC, setchuaPC] = useState([]);
+
     const [showAddForm, setShowAddForm] = useState(false);
     const [showDataGridPC, setShowDataGridPC] = useState(false);
     const [showTGB, setshowTGB] = useState(false);
@@ -172,6 +176,7 @@ const EditWatch = () => {
         } catch (error) {
             console.log('Lỗi khi gọi API:', error);
         }
+
         handleThoiGianBieuClick();
     };
 
@@ -289,28 +294,49 @@ const EditWatch = () => {
     //data phân công
     const columnsPC = [
         { field: 'MaLTC', headerName: 'Mã LTC', width: 200 },
-        { field: 'NamHoc', headerName: 'Năm Học', width: 100 },
-        { field: 'HocKi', headerName: 'Học Kì', width: 120 },
-        { field: 'SLToiDa', headerName: 'SL Tối Đa', width: 100 },
-        { field: 'NgayBD', headerName: 'Ngày Bắt Đầu', width: 170 },
-        { field: 'NgayKT', headerName: 'Ngày Kết Thúc', width: 120 },
-        { field: 'Active', headerName: 'Trạng Thái', width: 120 },
-        { field: 'MaMH', headerName: 'Mã Môn Học', width: 120 },
+        { field: 'MaGV', headerName: 'Mã giảng viên', width: 100 },
+        { field: 'HoTen', headerName: 'Họ tên', width: 120 },
+        { field: 'MaMH', headerName: 'Mã Môn học', width: 100 },
+        { field: 'TenMH', headerName: 'Tên môn học', width: 170 },
     ];
 
-    const rowsPC = LTC.map((ltc) => ({
-        id: ltc.MaLTC,
-        MaLTC: ltc.MaLTC,
-        NamHoc: ltc.NamHoc,
-        HocKi: ltc.HocKi,
-        SLToiDa: ltc.SLToiDa,
-        NgayBD: ltc.NgayBD.substring(0, 10),
-        NgayKT: ltc.NgayKT.substring(0, 10),
-        Active: ltc.Active,
-        MaMH: ltc.MaMH,
+    const rowsPC = daPC.map((dapc) => ({
+        id: dapc.MaLTC,
+        MaLTC: dapc.MaLTC,
+        MaGV: dapc.MaGV,
+        HoTen: dapc.HoTen,
+        MaMH: dapc.MaMH,
+        TenMH: dapc.TenMH,
     }));
 
-    const handleRowClickPC = (params) => {
+    const handleRowClickdaPC = (params) => {
+        // Lấy thông tin đồng hồ từ hàng được bấm
+        const selectedRowPC = params.row;
+        setSelectedLTC(selectedRowPC);
+    };
+
+    const columnschuaPC = [
+        { field: 'MaLTC', headerName: 'Mã LTC', width: 200 },
+        { field: 'NamHoc', headerName: 'Năm học', width: 100 },
+        { field: 'HocKi', headerName: 'Học kì', width: 120 },
+        { field: 'SLToiDa', headerName: 'Số lượng tối đa', width: 100 },
+        { field: 'NgayBD', headerName: 'Ngày Bắt đầu', width: 170 },
+        { field: 'NgayKT', headerName: 'Ngày Kết Thúc', width: 170 },
+        { field: 'MaMH', headerName: 'Mã Môn Học', width: 170 },
+    ];
+
+    const rowschuaPC = chuaPC.map((chuaPC) => ({
+        id: chuaPC.MaLTC,
+        MaLTC: chuaPC.MaLTC,
+        NamHoc: chuaPC.NamHoc,
+        HocKi: chuaPC.HocKi,
+        SLToiDa: chuaPC.SLToiDa,
+        NgayBD: chuaPC.NgayBD.substring(0, 10),
+        NgayKT: chuaPC.NgayKT.substring(0, 10),
+        MaMH: chuaPC.MaMH,
+    }));
+
+    const handleRowClickchuaPC = (params) => {
         // Lấy thông tin đồng hồ từ hàng được bấm
         const selectedRowPC = params.row;
         setSelectedLTC(selectedRowPC);
@@ -511,6 +537,54 @@ const EditWatch = () => {
     };
 
     const handlePhanCongClick = async () => {
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await API.get(
+                `/giangvien/hienThiBangPhanCongTheoGiangVien/${selectedWatch.id}`,
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            if (response.data.success) {
+                // Xử lý thành công sau khi cập nhật
+                setdaPC(response.data.data);
+
+                // Xử lý khi cập nhật đồng hồ không thành công
+            }
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await API.get(
+                `/giangvien/hienThiBangChuaPhanCongTheoGiangVien/${selectedWatch.id}`,
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            if (response.data.success) {
+                // Xử lý thành công sau khi cập nhật
+                setchuaPC(response.data.data);
+
+                // Xử lý khi cập nhật đồng hồ không thành công
+            }
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+
         setShowDataGridPC(true);
     };
 
@@ -809,6 +883,30 @@ const EditWatch = () => {
                                                         >
                                                             <CloseIcon />
                                                         </button>
+
+                                                        <div
+                                                            style={{ height: '100%', width: '100%' }}
+                                                            className="datagrid-container"
+                                                        >
+                                                            <DataGrid
+                                                                rows={rowschuaPC}
+                                                                columns={columnschuaPC}
+                                                                onRowClick={handleRowClickchuaPC}
+                                                            />
+                                                        </div>
+
+                                                        <div class="button-container">
+                                                            <button class="add-table-knd-btn" onClick={handleAddTGB}>
+                                                                THÊM
+                                                            </button>
+                                                            <button
+                                                                class="remove-table-knd-btn"
+                                                                onClick={handleDeleteTGB}
+                                                            >
+                                                                XÓA
+                                                            </button>
+                                                        </div>
+
                                                         <div
                                                             style={{ height: '100%', width: '100%' }}
                                                             className="datagrid-container"
@@ -816,12 +914,9 @@ const EditWatch = () => {
                                                             <DataGrid
                                                                 rows={rowsPC}
                                                                 columns={columnsPC}
-                                                                onRowClick={handleRowClickPC}
+                                                                onRowClick={handleRowClickdaPC}
                                                             />
                                                         </div>
-                                                        <button className="add-ltc-btn" onClick={handleAddPC}>
-                                                            THÊM
-                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
