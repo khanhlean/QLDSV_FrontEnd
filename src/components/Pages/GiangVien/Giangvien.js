@@ -23,7 +23,8 @@ const EditWatch = () => {
     const [showTGB, setshowTGB] = useState(false);
     const [showKND, setshowKND] = useState(false);
     const [selectedWatch, setSelectedWatch] = useState(null);
-    const [selectedLTC, setSelectedLTC] = useState('');
+    const [selectedChuaPC, setSelectedChuaPC] = useState('');
+    const [selectedDaPC, setSelectedDaPC] = useState('');
     const [selectedKNDCo, setSelectedKNDCo] = useState('');
     const [selectedKNDChua, setSelectedKNDChua] = useState('');
     const [selectedTGBCo, setSelectedTGBCo] = useState('');
@@ -120,35 +121,6 @@ const EditWatch = () => {
             console.log('Lỗi khi gọi API:', error);
         }
         setShowAddForm(false);
-        fetchData();
-    };
-
-    const handleAddPC = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await API.post(
-                '/giangvien/phanCongGiangVien',
-                {
-                    MaGV: selectedWatch.MaGV,
-                    MaLTC: selectedLTC.MaLTC,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                },
-            );
-            console.log(response.status);
-            if (response.status === 200) {
-            } else {
-                // console.log(response.data.error);
-                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
-            }
-        } catch (error) {
-            console.log('Lỗi khi gọi API:', error);
-        }
-        setShowAddForm(false);
-
         fetchData();
     };
 
@@ -262,6 +234,61 @@ const EditWatch = () => {
         handleKhaNangDayClick();
     };
 
+    const handleAddPC = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.post(
+                '/giangvien/phanCongGiangVien',
+                {
+                    MaGV: selectedWatch.MaGV,
+                    MaLTC: selectedChuaPC.MaLTC,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+        }
+        handlePhanCongClick();
+    };
+
+    const handleDeletePC = async () => {
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await API.post(
+                '/giangvien/xoaPhanCongGiangVien',
+                {
+                    MaGV: selectedWatch.MaGV,
+                    MaLTC: selectedDaPC.MaLTC,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+        }
+        handlePhanCongClick();
+    };
+
     //data
     const columns = [
         { field: 'HoTen', headerName: 'Họ Tên', width: 200 },
@@ -312,7 +339,7 @@ const EditWatch = () => {
     const handleRowClickdaPC = (params) => {
         // Lấy thông tin đồng hồ từ hàng được bấm
         const selectedRowPC = params.row;
-        setSelectedLTC(selectedRowPC);
+        setSelectedDaPC(selectedRowPC);
     };
 
     const columnschuaPC = [
@@ -339,7 +366,7 @@ const EditWatch = () => {
     const handleRowClickchuaPC = (params) => {
         // Lấy thông tin đồng hồ từ hàng được bấm
         const selectedRowPC = params.row;
-        setSelectedLTC(selectedRowPC);
+        setSelectedChuaPC(selectedRowPC);
     };
 
     //thời gian biểu
@@ -896,12 +923,12 @@ const EditWatch = () => {
                                                         </div>
 
                                                         <div class="button-container">
-                                                            <button class="add-table-knd-btn" onClick={handleAddTGB}>
+                                                            <button class="add-table-knd-btn" onClick={handleAddPC}>
                                                                 THÊM
                                                             </button>
                                                             <button
                                                                 class="remove-table-knd-btn"
-                                                                onClick={handleDeleteTGB}
+                                                                onClick={handleDeletePC}
                                                             >
                                                                 XÓA
                                                             </button>
