@@ -8,6 +8,7 @@ import { DataGrid } from '@mui/x-data-grid';
 const LopTinChi = () => {
     const [watches, setWatches] = useState([]);
     const [phong, setPhong] = useState([]);
+    const [monhoc, setMonHoc] = useState([]);
     const [LH, setLH] = useState([]);
     const [LHPH, setLHPH] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -32,6 +33,7 @@ const LopTinChi = () => {
 
     const [LHId, setLHId] = useState(null);
     const [phongId, setPhongId] = useState(null);
+    const [MHId, setMHId] = useState(null);
 
     useEffect(() => {
         if (selectedWatch) {
@@ -43,6 +45,7 @@ const LopTinChi = () => {
             setEditedMaMH(selectedWatch.MaMH);
         }
         fetchData();
+        fetchMonHoc();
     }, [selectedWatch]);
 
     async function fetchData() {
@@ -85,6 +88,21 @@ const LopTinChi = () => {
                 },
             });
             setPhong(response.data.phongHocChuaCo);
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+    }
+
+    async function fetchMonHoc() {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.get(`/monhoc/getallmonhoc`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setMonHoc(response.data.monhoc);
         } catch (error) {
             console.error(error);
             // Xử lý lỗi
@@ -376,13 +394,19 @@ const LopTinChi = () => {
                                                 value={addNgayKT}
                                                 onChange={(e) => setaddNgayKT(e.target.value)}
                                             />
-                                            <input
-                                                type="text"
-                                                placeholder="Mã Môn Học"
+
+                                            <select
+                                                id="MHComboBox"
                                                 value={addMaMH}
                                                 onChange={(e) => setaddMaMH(e.target.value)}
-                                            />
-
+                                            >
+                                                <option value="">-- Chọn Môn --</option>
+                                                {monhoc.map((monhoc) => (
+                                                    <option key={monhoc.MaMH} value={monhoc.MaMH}>
+                                                        {monhoc.TenMH}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <button className="add-button" onClick={handleAddGiangVien}>
                                                 <span>Xác Nhận</span>
                                             </button>

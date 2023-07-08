@@ -9,6 +9,7 @@ import { DataGrid } from '@mui/x-data-grid';
 
 const SinhVien = () => {
     const [watches, setWatches] = useState([]);
+    const [lop, setLop] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [selectedWatch, setSelectedWatch] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -40,9 +41,26 @@ const SinhVien = () => {
         }
 
         fetchData();
+        lopData();
     }, [selectedWatch]);
 
     async function fetchData() {
+        try {
+            const token = localStorage.getItem('token');
+            //console.log(token);
+            const response = await API.get('/sinhvien/getallsinhvien', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setWatches(response.data);
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+    }
+
+    async function lopData() {
         try {
             const token = localStorage.getItem('token');
             //console.log(token);
@@ -286,6 +304,18 @@ const SinhVien = () => {
                                                 value={addMaLop}
                                                 onChange={(e) => setaddMaLop(e.target.value)}
                                             />
+                                            <select
+                                                id="MHComboBox"
+                                                value={addMaLop}
+                                                onChange={(e) => setaddMaLop(e.target.value)}
+                                            >
+                                                <option value="">-- Chọn Môn --</option>
+                                                {lop.map((lop) => (
+                                                    <option key={lop.MaMH} value={lop.MaMH}>
+                                                        {lop.TenMH}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <input type="file" id="fileInput" />
                                             <button className="add-button" onClick={handleAddGiangVien}>
                                                 <span>Xác Nhận</span>
