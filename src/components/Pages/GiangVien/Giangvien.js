@@ -749,7 +749,7 @@ const EditWatch = () => {
                                             </select>
 
                                             <input
-                                                type="text"
+                                                type="Date"
                                                 placeholder="Ngày Sinh"
                                                 value={addNgaySinh}
                                                 onChange={(e) => handleDateChange(e.target.value)}

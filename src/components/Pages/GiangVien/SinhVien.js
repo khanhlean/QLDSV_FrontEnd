@@ -278,7 +278,7 @@ const SinhVien = () => {
                                                 <option value="0">Nữ</option>
                                             </select>
                                             <input
-                                                type="text"
+                                                type="Date"
                                                 placeholder="Ngày Sinh"
                                                 value={addNgaySinh}
                                                 onChange={(e) => handleDateChange(e.target.value)}
@@ -294,17 +294,31 @@ const SinhVien = () => {
                                                 value={addKhoaHoc}
                                                 onChange={(e) => setaddKhoaHoc(e.target.value)}
                                             >
-                                                <option value="2017-2021">2017-2021</option>
-                                                <option value="2018-2022">2018-2022</option>
+                                                <option value="2017-2022">2017-2021</option>
+                                                <option value="2018-2023">2018-2022</option>
+                                                <option value="2019-2024">2018-2022</option>
+                                                <option value="2020-2025">2018-2022</option>
+                                                <option value="2021-2026">2018-2022</option>
+                                                <option value="2022-2027">2018-2022</option>
                                             </select>
 
-                                            <input
+                                            {/* <input
                                                 type="text"
                                                 placeholder="Mã Lớp"
                                                 value={addMaLop}
                                                 onChange={(e) => setaddMaLop(e.target.value)}
-                                            />
+                                            /> */}
                                             <select
+                                                id="lineComboBox"
+                                                value={addMaLop}
+                                                onChange={(e) => setaddMaLop(e.target.value)}
+                                            >
+                                                <option value="LO1">d19cqcn01</option>
+                                                <option value="LO2">d18cqcn02</option>
+                                                <option value="LO3">d18cqcn03</option>
+                                                <option value="LO4">n19dccn01</option>
+                                            </select>
+                                            {/* <select
                                                 id="MHComboBox"
                                                 value={addMaLop}
                                                 onChange={(e) => setaddMaLop(e.target.value)}
@@ -315,7 +329,7 @@ const SinhVien = () => {
                                                         {lop.TenMH}
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select> */}
                                             <input type="file" id="fileInput" />
                                             <button className="add-button" onClick={handleAddGiangVien}>
                                                 <span>Xác Nhận</span>

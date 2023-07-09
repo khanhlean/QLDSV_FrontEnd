@@ -2,6 +2,8 @@ import React from 'react';
 //import { push } from 'connected-react-router';
 import { handleLogin } from '@/services/staffServices';
 import './Login.scss';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 class Login extends React.Component {
     constructor(props) {
@@ -29,10 +31,6 @@ class Login extends React.Component {
     };
 
     handleLogin = async () => {
-        //alert('Login success');
-        this.setState({
-            errMessage: '',
-        });
         try {
             const response = await handleLogin(this.state.username, this.state.password);
             const token = response.data.token;
@@ -42,24 +40,38 @@ class Login extends React.Component {
             localStorage.setItem('MaVaitro', maVaitro);
 
             // Redirect đến trang menu
-            if (maVaitro == 'QL') {
+            if (maVaitro === 'QL') {
                 this.props.history.push('/giangvien/menu');
-                window.location.reload();
             } else {
                 this.props.history.push('/sinhvien/menu');
-                window.location.reload();
             }
-        } catch (e) {
-            if (e.response) {
-                if (e.response.data) {
-                    this.setState({
-                        errMessage: e.response.data.message,
-                    });
-                }
+
+            Swal.fire({
+                title: 'Đăng nhập thành công',
+                text: response.data.message,
+                icon: 'success',
+                confirmButtonText: 'OK',
+            });
+
+            window.location.reload();
+        } catch (error) {
+            let errorMessage = 'Đăng nhập thất bại';
+            if (error.response && error.response.data && error.response.data.error) {
+                errorMessage = error.response.data.error;
             }
+
+            Swal.fire({
+                title: errorMessage,
+                text: '',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+
+            this.setState({
+                errMessage: errorMessage,
+            });
         }
     };
-
     handleShowPassword = () => {
         this.setState({
             isShowPassword: !this.state.isShowPassword,

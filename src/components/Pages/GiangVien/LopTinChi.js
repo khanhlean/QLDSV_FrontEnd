@@ -4,6 +4,8 @@ import API from '@/services/api';
 import Sidebar from '@/components/DefaultLayout/Sidebar/SidebarGV';
 import CloseIcon from '@mui/icons-material/Close';
 import { DataGrid } from '@mui/x-data-grid';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const LopTinChi = () => {
     const [watches, setWatches] = useState([]);
@@ -11,11 +13,19 @@ const LopTinChi = () => {
     const [monhoc, setMonHoc] = useState([]);
     const [LH, setLH] = useState([]);
     const [LHPH, setLHPH] = useState([]);
+    const [DSV, setDSV] = useState([]);
+
     const [showAddForm, setShowAddForm] = useState(false);
     const [selectedWatch, setSelectedWatch] = useState(null);
     const [selectedLHvaPhong, setSelectedLHvaPhong] = useState(null);
+    const [selectedDSV, setSelectedDSV] = useState(null);
+    const [editedDiemCC, setEditedDiemCC] = useState(null);
+    const [editedDiemGK, setEditedDiemGK] = useState(null);
+    const [editedDiemCK, setEditedDiemCK] = useState(null);
+
     const [isEditing, setIsEditing] = useState(false);
     const [showLHPH, setshowLHPH] = useState(false);
+    const [showDSV, setshowDSV] = useState(false);
 
     const [addNamHoc, setaddNamHoc] = useState('');
     const [addHocKi, setaddHocKi] = useState('');
@@ -217,7 +227,7 @@ const LopTinChi = () => {
         SLToiDa: watch.SLToiDa,
         NgayBD: watch.NgayBD.substring(0, 10),
         NgayKT: watch.NgayKT.substring(0, 10),
-        Active: watch.Active ? 'Đang Hoạt Động' : 'Đã Nghỉ',
+        Active: watch.Active ? 'Đang mở đăng kí' : 'Đã đóng đăng kí',
         MaMH: watch.MaMH,
     }));
 
@@ -269,6 +279,90 @@ const LopTinChi = () => {
         fetchLH();
         fetchPhong();
         setshowLHPH(true);
+    };
+
+    const handleAddDSV = async () => {
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await API.post(
+                '/monhoc/chinhSuaDiemSinhVien',
+                {
+                    MaSV: selectedDSV.MaSV,
+                    MaLTC: selectedWatch.id,
+                    DiemCC: editedDiemCC,
+                    DiemGK: editedDiemGK,
+                    DiemCK: editedDiemCK,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.status);
+            if (response.status === 200) {
+                Swal.fire('Thành công', response.data.message, 'success');
+            } else {
+                // console.log(response.data.error);
+                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi API:', error);
+            Swal.fire('Thất bại', error, 'success');
+        }
+
+        handleND();
+    };
+
+    const handleND = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await API.get(`/monhoc/hienThiDanhSachDangKi/${selectedWatch.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(response.data.success);
+            setDSV(response.data.danhSachDangKi);
+        } catch (error) {
+            console.error(error);
+            // Xử lý lỗi
+        }
+        // fetchLH();
+        // fetchPhong();
+        setshowDSV(true);
+    };
+
+    const columnsDSV = [
+        { field: 'MaSV', headerName: 'Mã SV', width: 100 },
+        { field: 'MaLTC', headerName: 'Mã LTC', width: 100 },
+        { field: 'HoTen', headerName: 'Họ tên', flex: 1 },
+        { field: 'KhoaHoc', headerName: 'Khóa', flex: 1 },
+        { field: 'DiemCC', headerName: 'Điểm CC', flex: 1 },
+        { field: 'DiemGK', headerName: 'Điểm GK', flex: 1 },
+        { field: 'DiemCK', headerName: 'Điểm CK', flex: 1 },
+    ];
+
+    const rowsDSV = DSV.map((dsv) => ({
+        id: dsv.MaSV,
+        MaSV: dsv.MaSV,
+        MaLTC: dsv.MaLTC,
+        HoTen: dsv.HoTen,
+        KhoaHoc: dsv.KhoaHoc,
+        DiemCC: dsv.DiemCC,
+        DiemGK: dsv.DiemGK,
+        DiemCK: dsv.DiemCK,
+    }));
+
+    const handleRowClickDSV = (params) => {
+        // Lấy thông tin đồng hồ từ hàng được bấm
+        const selectedRow = params.row;
+
+        setSelectedDSV(selectedRow);
+        setEditedDiemCC(selectedRow.DiemCC);
+        setEditedDiemGK(selectedRow.DiemGK);
+        setEditedDiemCK(selectedRow.DiemCK);
     };
 
     const handleSaveClick = async () => {
@@ -361,19 +455,41 @@ const LopTinChi = () => {
                                                 <CloseIcon />
                                             </button>
                                             <h4>Thêm</h4>
-                                            <input
+                                            {/* <input
                                                 type="text"
                                                 placeholder="Năm Học"
                                                 value={addNamHoc}
                                                 onChange={(e) => setaddNamHoc(e.target.value)}
-                                            />
+                                            /> */}
+                                            <select
+                                                id="lineComboBox"
+                                                value={addNamHoc}
+                                                onChange={(e) => setaddNamHoc(e.target.value)}
+                                            >
+                                                <option value="2019-2020">2019-2020</option>
+                                                <option value="2020-2021">2020-2021</option>
+                                                <option value="2021-2022">2021-2022</option>
+                                                <option value="2022-2023">2022-2023</option>
+                                                <option value="2023-2024">2023-2024</option>
+                                                <option value="2024-2025">2024-2025</option>
+                                            </select>
 
-                                            <input
+                                            {/* <input
                                                 type="text"
                                                 placeholder="Học Kì"
                                                 value={addHocKi}
                                                 onChange={(e) => setaddHocKi(e.target.value)}
-                                            />
+                                            /> */}
+
+                                            <select
+                                                id="lineComboBox"
+                                                value={addHocKi}
+                                                onChange={(e) => setaddHocKi(e.target.value)}
+                                            >
+                                                <option value="HK1">Học kì 1</option>
+                                                <option value="HK2">Học kì 2</option>
+                                                <option value="HK2">Học kì 3</option>
+                                            </select>
 
                                             <input
                                                 type="number"
@@ -382,14 +498,14 @@ const LopTinChi = () => {
                                                 onChange={(e) => setaddSLToiDa(e.target.value)}
                                             />
                                             <input
-                                                type="text"
+                                                type="Date"
                                                 placeholder="Ngày Bắt Đầu"
                                                 value={addNgayBD}
                                                 onChange={(e) => setaddNgayBD(e.target.value)}
                                             />
 
                                             <input
-                                                type="text"
+                                                type="Date"
                                                 placeholder="Ngày Kết Thúc"
                                                 value={addNgayKT}
                                                 onChange={(e) => setaddNgayKT(e.target.value)}
@@ -496,6 +612,13 @@ const LopTinChi = () => {
                                                         >
                                                             <span>LỊCH HỌC</span>
                                                         </button>
+                                                        <button
+                                                            type="button"
+                                                            className="delete-button"
+                                                            onClick={handleND}
+                                                        >
+                                                            <span>NHẬP ĐIỂM</span>
+                                                        </button>
                                                         {isEditing ? (
                                                             <button
                                                                 type="button"
@@ -582,6 +705,67 @@ const LopTinChi = () => {
                                                                 rows={rowsLHvaPhong}
                                                                 columns={columnsLHvaPhong}
                                                                 onRowClick={handleRowClickLHvaPhong}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {showDSV && (
+                                            <div>
+                                                <div className="data-grid-phlh-overlay">
+                                                    <div className="data-grid-phlh-container">
+                                                        <button
+                                                            className="close-button"
+                                                            onClick={() => setshowDSV(false)}
+                                                        >
+                                                            <CloseIcon />
+                                                        </button>
+                                                        <div className="inputdiem">
+                                                            <p>Điểm chuyên cần: </p>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Điểm chuyên cần"
+                                                                value={editedDiemCC}
+                                                                onChange={(e) => setEditedDiemCC(e.target.value)}
+                                                            />
+                                                        </div>
+                                                        <div className="inputdiem">
+                                                            <p>Điểm giữa kì:</p>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Điểm giữa kì"
+                                                                value={editedDiemGK}
+                                                                onChange={(e) => setEditedDiemGK(e.target.value)}
+                                                            />
+                                                        </div>
+                                                        <div className="inputdiem">
+                                                            <p>Điểm cuối kì:</p>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Điểm cuối kì"
+                                                                value={editedDiemCK}
+                                                                onChange={(e) => setEditedDiemCK(e.target.value)}
+                                                            />
+                                                        </div>
+                                                        <div className="button-container">
+                                                            <button
+                                                                className="add-table-phlh-btn"
+                                                                onClick={handleAddDSV}
+                                                            >
+                                                                SỬA
+                                                            </button>
+                                                        </div>
+
+                                                        <div
+                                                            style={{ height: '100%', width: '100%' }}
+                                                            className="datagrid-container"
+                                                        >
+                                                            <DataGrid
+                                                                rows={rowsDSV}
+                                                                columns={columnsDSV}
+                                                                onRowClick={handleRowClickDSV}
                                                             />
                                                         </div>
                                                     </div>

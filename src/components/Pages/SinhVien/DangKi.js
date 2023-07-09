@@ -6,6 +6,8 @@ import API from '@/services/api';
 import SidebarSV from '@/components/DefaultLayout/Sidebar/SidebarSV';
 import CloseIcon from '@mui/icons-material/Close';
 import { DataGrid } from '@mui/x-data-grid';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const EditWatch = () => {
     const [watches, setWatches] = useState([]);
@@ -201,7 +203,6 @@ const EditWatch = () => {
         }
         handleThoiGianBieuClick();
     };
-
     const handleAddKND = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -218,13 +219,39 @@ const EditWatch = () => {
             );
             console.log(response.status);
             if (response.status === 200) {
+                Swal.fire({
+                    title: 'Thành công',
+                    text: 'Đăng kí lớp tín chỉ thành công',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                });
             } else {
-                // console.log(response.data.error);
-                // setErrorMessage(response.data.error); // Gán thông báo lỗi vào state
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: response.data.error,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
             }
         } catch (error) {
             console.log('Lỗi khi gọi API:', error);
+            if (error.response && error.response.data && error.response.data.error) {
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: error.response.data.error,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
+            } else {
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: 'Lỗi khi gọi API',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
+            }
         }
+
         handleKhaNangDayClick();
         fetchData();
         LTCData();

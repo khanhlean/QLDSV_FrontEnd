@@ -3,6 +3,13 @@
     margin-left: 64.333px;
 }
 
+.swal2-container {
+    z-index: 9999999999999999999999;
+}
+.inputdiem {
+    display: flex;
+    align-items: baseline;
+}
 .form_watchlist::before {
     content: '';
     position: absolute;

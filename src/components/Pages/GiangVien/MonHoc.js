@@ -246,19 +246,19 @@ const MonHoc = () => {
 
                                             <input
                                                 type="number"
-                                                placeholder="Chuyên Cần"
+                                                placeholder="Hệ số chuyên cần"
                                                 value={addHeSoCC}
                                                 onChange={(e) => setaddHeSoCC(e.target.value)}
                                             />
                                             <input
                                                 type="number"
-                                                placeholder="Giữa Kì"
+                                                placeholder="Hệ số giữa Kì"
                                                 value={addHeSoGK}
                                                 onChange={(e) => setaddHeSoGK(e.target.value)}
                                             />
                                             <input
                                                 type="number"
-                                                placeholder="Cuối kì"
+                                                placeholder="Hệ số cuối kì"
                                                 value={addHeSoCK}
                                                 onChange={(e) => setaddHeSoCK(e.target.value)}
                                             />
