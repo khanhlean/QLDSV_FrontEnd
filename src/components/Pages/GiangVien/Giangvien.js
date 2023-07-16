@@ -37,6 +37,7 @@ const EditWatch = () => {
     const [addPhai, setaddPhai] = useState(1);
     const [addNgaySinh, setaddNgaySinh] = useState('');
     const [addDiaChi, setaddDiaChi] = useState('');
+    const [addHinhAnh, setaddHinhAnh] = useState('');
 
     const [editedName, setEditedName] = useState(null);
     const [editedHocHam, setEditedHocHam] = useState(null);
@@ -53,6 +54,7 @@ const EditWatch = () => {
             setEditedLine(selectedWatch.Phai === 'Nam' ? 1 : 0);
             setEditedQuantity(selectedWatch.NgaySinh);
             setEditedType(selectedWatch.DiaChi);
+
         }
 
         fetchData();
@@ -762,6 +764,12 @@ const EditWatch = () => {
                                                 onChange={(e) => setaddDiaChi(e.target.value)}
                                             />
 
+                                            <input
+                                                type="file"
+                                                placeholder="Hinh Anh"
+                                                value={addDiaChi}
+                                                onChange={(e) => setaddDiaChi(e.target.value)}
+                                            />
                                             <button className="add-button" onClick={handleAddGiangVien}>
                                                 <span>Xác Nhận</span>
                                             </button>
@@ -788,8 +796,11 @@ const EditWatch = () => {
                                                 <h2>Thông Tin Giảng Viên</h2>
                                                 <div class="image-container">
                                                     <img
-                                                        src={`${process.env.PUBLIC_URL}/3375735-200.png`}
+                                                        src={selectedWatch.image}
                                                         alt={selectedWatch.name}
+                                                        // className="scaled-img"
+                                                        // src={`${process.env.PUBLIC_URL}/3375735-200.png`}
+                                                        // alt={selectedWatch.name}
                                                         className="scaled-img"
                                                     />
                                                 </div>
